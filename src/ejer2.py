@@ -64,8 +64,8 @@ print(f'Número máximo de emails recibidos: {maxEmails}')
 
 #Apartado f: Valor mínimo y valor máximo del número de emails de phishing en los que ha interactuado un administrador.
 adminDataFrame = usersDataFrame[usersDataFrame['perms']=='1']
-minAdminEmails = adminDataFrame['totalEmails'].min()
-maxAdminEmails = adminDataFrame['totalEmails'].max()
+minAdminEmails = adminDataFrame['clickedEmails'].min()
+maxAdminEmails = adminDataFrame['clickedEmails'].max()
 print(f'Mínimo de emails de phishing interactuados por administradores: {minAdminEmails}')
 print(f'Máximo de emails de phishing interactuados por administradores: {maxAdminEmails}')
 
