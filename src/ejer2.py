@@ -48,12 +48,12 @@ print(f'Desviación estándar de IPs detectadas: {ipsDv}')
 
 
 # Apartado d: Media y desviación estándar del número de email recibidos de phishing en los que ha interactuado cualquier usuario.
-phishingDataFrame = pd.read_sql_query("SELECT username, phishingEmails FROM users", con)
+clickedDataFrame = pd.read_sql_query("SELECT username, clickedEmails FROM users", con)
 
-phishingMean = phishingDataFrame['phishingEmails'].mean()
-phishingDv = phishingDataFrame['phishingEmails'].std()
-print(f'Media de correos de phishing: {phishingMean}')
-print(f'Desviación estándar de correos de phishing: {phishingDv}')
+clickedMean = clickedDataFrame['clickedEmails'].mean()
+clickedDv = clickedDataFrame['clickedEmails'].std()
+print(f'Media de correos de phishing clickados: {clickedMean}')
+print(f'Desviación estándar de correos de phishing clickados: {clickedDv}')
 
 # Apartado e: Valor mínimo y valor máximo del total de emails recibidos.
 totalEmailsDataFrame = pd.read_sql_query("SELECT username, totalEmails FROM users", con)
