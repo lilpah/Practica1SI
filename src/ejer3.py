@@ -61,6 +61,20 @@ def groupByEasyCrackPass(usersDataFrame):
     return usersEasyToCrack, usersDifficultToCrack
 
 
+def calculateMedia(agrup):
+    mean = agrup["phishingEmails"].mean()
+    return mean
+
+
+def calculateVar(agrup):
+    var = agrup["phishingEmails"].var()
+    return var
+
+def calculateMaxandMin(agrup):
+    max = agrup["phishingEmails"].max()
+    min = agrup["phishingEmails"].min()
+    return max, min
+
 
 if __name__ == '__main__':
 
@@ -76,3 +90,32 @@ if __name__ == '__main__':
 
     # Creo una agrupacion basandome en si una contraseña es facilmente crackeable o no
     usersEasyToCrack, usersDifficultToCrack = groupByEasyCrackPass(usersDataFrame)
+
+
+
+
+
+    # Medias de emails de phishing de los usuarios por agrupaciones
+    print("### Medias ###")
+    print("La media de emails de phishing para la agrupacion de usuarios normales es: " + str(calculateMedia(groupNormalUsers)))
+    print("La media de emails de phishing para la agrupacion de administradores es: " + str(calculateMedia(groupAdmins)))
+    print("La media de emails de phishing para la agrupacion de usuarios con contraseña facilmente crackeable es: " + str(calculateMedia(usersEasyToCrack)))
+    print("La media de emails de phishing para la agrupacion de usuarios con contraseña mas robustas es: " + str(calculateMedia(usersDifficultToCrack)) + "\n")
+
+    print("###################\n")
+
+    # Varianza de emails de phishing de los usuarios por agrupaciones
+    print("### Varianzas ###")
+    print("La varianza de emails de phishing para la agrupacion de usuarios normales es: " + str(calculateVar(groupNormalUsers)))
+    print("La varianza de emails de phishing para la agrupacion de administradores es: " + str(calculateVar(groupAdmins)))
+    print("La varianza de emails de phishing para la agrupacion de usuarios con contraseña facilmente crackeable es: " + str(calculateVar(usersEasyToCrack)))
+    print("La varianza de emails de phishing para la agrupacion de usuarios con contraseña mas robustas es: " + str(calculateVar(usersDifficultToCrack)) + "\n")
+
+    print("###################\n")
+
+    # Valor minimo y maximo de emails de phishing de los usuarios por agrupaciones
+    print("### Valores maximo y minimo ###")
+    print("El valor maximo y minimo de emails de phishing para la agrupacion de usuarios normales es: " + str(calculateMaxandMin(groupNormalUsers)))
+    print("El valor maximo y minimo de emails de phishing para la agrupacion de administradores es: " + str(calculateMaxandMin(groupAdmins)))
+    print("El valor maximo y minimo de emails de phishing para la agrupacion de usuarios con contraseña facilmente crackeable es: " + str(calculateMaxandMin(usersEasyToCrack)))
+    print("El valor maximo y minimo de emails de phishing para la agrupacion de usuarios con contraseña mas robustas es: " + str(calculateMaxandMin(usersDifficultToCrack)) + "\n")
