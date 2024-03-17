@@ -55,4 +55,20 @@ phishingDv = phishingDataFrame['phishingEmails'].std()
 print(f'Media de correos de phishing: {phishingMean}')
 print(f'Desviación estándar de correos de phishing: {phishingDv}')
 
+# Apartado e: Valor mínimo y valor máximo del total de emails recibidos.
+totalEmailsDataFrame = pd.read_sql_query("SELECT username, totalEmails FROM users", con)
+minEmails = totalEmailsDataFrame['totalEmails'].min()
+maxEmails = totalEmailsDataFrame['totalEmails'].max()
+print(f'Número mínimo de emails recibidos: {minEmails}')
+print(f'Número máximo de emails recibidos: {maxEmails}')
+
+#Apartado f: Valor mínimo y valor máximo del número de emails de phishing en los que ha interactuado un administrador.
+adminDataFrame = usersDataFrame[usersDataFrame['perms']==1]
+
+minAdminEmails = adminDataFrame['totalEmails'].min()
+maxAdminEmails = adminDataFrame['totalEmails'].max()
+print(f'Mínimo de emails de phishing interactuados por administradores: {minAdminEmails}')
+print(f'Máximo de emails de phishing interactuados por administradores: {maxAdminEmails}')
+
+
 con.close()
