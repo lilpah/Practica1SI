@@ -75,6 +75,21 @@ def calculateMaxandMin(agrup):
     min = agrup["phishingEmails"].min()
     return max, min
 
+def calculateMedian(agrup):
+    median = agrup["phishingEmails"].median()
+    return median
+
+def calculateNumObserv(agrup):
+    sumTotal = agrup["phishingEmails"].sum()
+    return sumTotal
+
+
+def calculateNumValoresAusente(agrup):
+    # Con esta linea cuento los campos de email de phishing que estan a 0 o con valor None
+    numMissingValues = ((agrup["phishingEmails"] == 0) | (agrup["phishingEmails"].isnull())).sum()
+    return numMissingValues
+
+
 
 if __name__ == '__main__':
 
@@ -92,7 +107,30 @@ if __name__ == '__main__':
     usersEasyToCrack, usersDifficultToCrack = groupByEasyCrackPass(usersDataFrame)
 
 
+    # Numero de observaciones (total de emails de phishing) de los usuarios por agrupaciones
+    print("### Numero observaciones ###")
+    print("El numero de observaciones de emails de phishing para la agrupacion de usuarios normales es: " + str(calculateNumObserv(groupNormalUsers)))
+    print("El numero de observaciones de emails de phishing para la agrupacion de administradores es: " + str(calculateNumObserv(groupAdmins)))
+    print("El numero de observaciones de emails de phishing para la agrupacion de usuarios con contraseña facilmente crackeable es: " + str(calculateNumObserv(usersEasyToCrack)))
+    print("El numero de observaciones de emails de phishing para la agrupacion de usuarios con contraseña mas robustas es: " + str(calculateNumObserv(usersDifficultToCrack)) + "\n")
 
+    print("###################\n")
+
+    # Numero de valores ausentes (estan a 0 o a None) de los usuarios por agrupaciones
+    print("### Numero valores ausentes ###")
+    print("El numero de valores ausentes de emails de phishing para la agrupacion de usuarios normales es: " + str(calculateNumValoresAusente(groupNormalUsers)))
+    print("El numero de valores ausentes de emails de phishing para la agrupacion de administradores es: " + str(calculateNumValoresAusente(groupAdmins)))
+    print("El numero de valores ausentes de emails de phishing para la agrupacion de usuarios con contraseña facilmente crackeable es: " + str(calculateNumValoresAusente(usersEasyToCrack)))
+    print("El numero de valores ausentes de emails de phishing para la agrupacion de usuarios con contraseña mas robustas es: " + str(calculateNumValoresAusente(usersDifficultToCrack)) + "\n")
+
+    print("###################\n")
+
+    # Mediana de emails de phishing de los usuarios por agrupaciones
+    print("### Mediana ###")
+    print("La mediana de emails de phishing para la agrupacion de usuarios normales es: " + str(calculateMedian(groupNormalUsers)))
+    print("La mediana de emails de phishing para la agrupacion de administradores es: " + str(calculateMedian(groupAdmins)))
+    print("La mediana de emails de phishing para la agrupacion de usuarios con contraseña facilmente crackeable es: " + str(calculateMedian(usersEasyToCrack)))
+    print("La mediana de emails de phishing para la agrupacion de usuarios con contraseña mas robustas es: " + str(calculateMedian(usersDifficultToCrack)) + "\n")
 
 
     # Medias de emails de phishing de los usuarios por agrupaciones
