@@ -55,7 +55,7 @@ def insertUsers(userFile):
                 if ips != 'None':
                     ip = ips[cont]
                 else:
-                    ip = None
+                    ip = "None"
                 c.execute('''INSERT OR IGNORE INTO usersDatesIps VALUES (?, ?, ?)''',
                           (username, fecha, ip))
 
