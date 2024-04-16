@@ -26,9 +26,9 @@ def index():
     return render_template("index.html", app_data=app_data)
 
 
-@app.route("/about")
-def about():
-    return render_template("about.html", app_data=app_data)
+@app.route("/top10")
+def top10():
+    return render_template("top10.html", app_data=app_data)
 
 
 @app.route("/service")
@@ -39,6 +39,8 @@ def service():
 @app.route("/contact")
 def contact():
     return render_template("contact.html", app_data=app_data)
+
+
 
 
 if __name__ == "__main__":
