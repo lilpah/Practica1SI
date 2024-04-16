@@ -10,7 +10,7 @@ def createBBDD():
 
     # Creamos las tablas usuarios y legal
     c.execute('''CREATE TABLE IF NOT EXISTS users
-                     (username TEXT PRIMARY KEY, phone INTEGER, password TEXT, province TEXT, perms TEXT, totalEmails INTEGER, phishingEmails INTEGER, clickedEmails INTEGER)''')
+                     (username TEXT PRIMARY KEY, phone INTEGER, password TEXT, province TEXT, perms TEXT, totalEmails INTEGER, phishingEmails INTEGER, clickedEmails INTEGER, critical INTEGER)''')
 
     c.execute('''CREATE TABLE IF NOT EXISTS legal
                      (web TEXT PRIMARY KEY, cookies INTEGER, warning INTEGER, dataProtection INTEGER,  createNumber INTEGER)''')
@@ -45,6 +45,7 @@ def insertUsers(userFile):
             clickedEmails = dataOfUser['emails']['cliclados']
             dates = (dataOfUser['fechas'])
             ips = (dataOfUser['ips'])
+            critical = (dataOfUser['critico'])
 
             maxNum = max(len(dates),len(ips))
             minNum = min(len(dates),len(ips))
@@ -60,8 +61,8 @@ def insertUsers(userFile):
                           (username, fecha, ip))
 
 
-            c.execute('''INSERT OR IGNORE INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                      (username, phone, password, province, perms, totalEmails, phishingEmails, clickedEmails))
+            c.execute('''INSERT OR IGNORE INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                      (username, phone, password, province, perms, totalEmails, phishingEmails, clickedEmails, critical))
 
     # Confirmamos cambios y cerramos la conexion
     conn.commit()
@@ -97,7 +98,7 @@ if __name__ == "__main__":
     createBBDD()
     print("[!] BBDD creada")
     print("Insertando datos de users_data_online.json y legal_data_online.json")
-    insertUsers("ficheros/users_data_online.json")
+    insertUsers("ficheros/users_data_online_clasificado.json")
     insertLegal("ficheros/legal_data_online.json")
     print("Base de datos creada correctamente")
 
