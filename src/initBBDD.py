@@ -1,5 +1,7 @@
 import json
 import sqlite3
+from datetime import datetime
+
 
 def createBBDD():
     # Conexion a la base de datos creada (databaseETL.db)
@@ -8,10 +10,13 @@ def createBBDD():
 
     # Creamos las tablas usuarios y legal
     c.execute('''CREATE TABLE IF NOT EXISTS users
-                     (username TEXT PRIMARY KEY, phone INTEGER, password TEXT, province TEXT, perms TEXT, totalEmails INTEGER, phishingEmails INTEGER, clickedEmails INTEGER, dates TEXT, ips TEXT)''')
+                     (username TEXT PRIMARY KEY, phone INTEGER, password TEXT, province TEXT, perms TEXT, totalEmails INTEGER, phishingEmails INTEGER, clickedEmails INTEGER)''')
 
     c.execute('''CREATE TABLE IF NOT EXISTS legal
                      (web TEXT PRIMARY KEY, cookies INTEGER, warning INTEGER, dataProtection INTEGER,  createNumber INTEGER)''')
+
+    c.execute('''CREATE TABLE IF NOT EXISTS usersDatesIps
+                         (username TEXT , dates DATE, ip TEXT,FOREIGN KEY (username) REFERENCES users(username),PRIMARY KEY (username, dates,ip))''')
 
     # Confirmamos cambios y cerramos la conexion
     conn.commit()
@@ -38,11 +43,25 @@ def insertUsers(userFile):
             totalEmails = dataOfUser['emails']['total']
             phishingEmails = dataOfUser['emails']['phishing']
             clickedEmails = dataOfUser['emails']['cliclados']
-            dates = str(dataOfUser['fechas'])
-            ips = str(dataOfUser['ips'])
+            dates = (dataOfUser['fechas'])
+            ips = (dataOfUser['ips'])
 
-            c.execute('''INSERT OR IGNORE INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                      (username, phone, password, province, perms, totalEmails, phishingEmails, clickedEmails, dates, ips))
+            maxNum = max(len(dates),len(ips))
+            minNum = min(len(dates),len(ips))
+            for cont in range(maxNum):
+
+
+                fecha = datetime.strptime(dates[cont], '%d/%m/%Y').date()
+                if ips != 'None':
+                    ip = ips[cont]
+                else:
+                    ip = None
+                c.execute('''INSERT OR IGNORE INTO usersDatesIps VALUES (?, ?, ?)''',
+                          (username, fecha, ip))
+
+
+            c.execute('''INSERT OR IGNORE INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                      (username, phone, password, province, perms, totalEmails, phishingEmails, clickedEmails))
 
     # Confirmamos cambios y cerramos la conexion
     conn.commit()
@@ -78,8 +97,8 @@ if __name__ == "__main__":
     createBBDD()
     print("[!] BBDD creada")
     print("Insertando datos de users_data_online.json y legal_data_online.json")
-    insertUsers("users_data_online.json")
-    insertLegal("legal_data_online.json")
+    insertUsers("ficheros/users_data_online.json")
+    insertLegal("ficheros/legal_data_online.json")
     print("Base de datos creada correctamente")
 
 
