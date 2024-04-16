@@ -17,20 +17,13 @@ print(f"Número de muestras: {len(usersDataFrame.dropna())}")
 
 
 # Apartado b: Media y desviación estándar del total de fechas en las que se ha cambiado la contraseña.
-datesDataFrame = pd.read_sql_query("SELECT username, dates FROM users", con)
-datesDataFrame['numDates'] = 0
-i = 0
-for str in datesDataFrame['dates']:
-    str = str.strip('[]').split(", ")
-    datesDataFrame.loc[i,'numDates'] = len(str)
-    i+=1
+datesDataFrame = pd.read_sql_query("SELECT u.username, COUNT(f.fecha) AS numero_de_fechas FROM usuarios u LEFT JOIN fechas f ON u.username = f.username GROUP BY u.username", con)
 
 
-datesMean = datesDataFrame['numDates'].mean()
-dateDv = datesDataFrame['numDates'].std()
+datesMean = datesDataFrame.mean()
+dateDv = datesDataFrame.std()
 print(f'Media de cambios de contraseña: {datesMean}')
 print(f'Desviación estándar de cambios de contraseña: {dateDv}')
-
 
 # Apartado c: Media y desviación estándar del total de IPs que se han detectado
 ipsDataFrame = pd.read_sql_query("SELECT username, ips FROM users", con)
@@ -70,4 +63,4 @@ print(f'Mínimo de emails de phishing interactuados por administradores: {minAdm
 print(f'Máximo de emails de phishing interactuados por administradores: {maxAdminEmails}')
 
 
-con.close()
+con.close()'''
