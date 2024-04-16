@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from numpy import nan
 
-con = sqlite3.connect("databaseETL.db")
+con = sqlite3.connect("../databaseETL.db")
 cur = con.cursor()
 
 

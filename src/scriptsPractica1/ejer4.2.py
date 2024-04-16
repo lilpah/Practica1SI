@@ -46,7 +46,7 @@ def tenUsersMostCritics(usersDataFrame):
 
 
 if __name__ =='__main__':
-    con = sqlite3.connect("databaseETL.db")
+    con = sqlite3.connect("../databaseETL.db")
     cur = con.cursor()
 
     usersDataFrame = pd.read_sql_query("SELECT * from users", con)

@@ -1,12 +1,11 @@
 import ast
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import pandas as pd
 import numpy as np
 import sqlite3
 import plotly.graph_objects as go
 
-from src.ejer3 import groupByEasyCrackPass
 
 def graficopass(usersDataFrame):
     # Convertir la cadena de lista en una lista de Python
@@ -85,7 +84,7 @@ def graficopass(usersDataFrame):
 
 #easy_to_crack_users, difficult_to_crack_users = groupByEasyCrackPass(usersDataFrame)
 if __name__ =='__main__':
-    con = sqlite3.connect("databaseETL.db")
+    con = sqlite3.connect("../databaseETL.db")
     cur = con.cursor()
     usersDataFrame = pd.read_sql_query("SELECT * from users", con)
     graficopass(usersDataFrame)

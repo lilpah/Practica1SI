@@ -26,7 +26,7 @@ def groupByPerms(usersDataFrame):
 def crackeable(password):
 
     # Abrimos el fichero cargando su contendio en data
-    with open("SmallRockYou.txt", 'r') as rockYou:
+    with open("../ficheros/SmallRockYou.txt", 'r') as rockYou:
         data = rockYou.read().splitlines()
         #print(data)
 
@@ -94,7 +94,7 @@ def calculateNumValoresAusente(agrup):
 if __name__ == '__main__':
 
     #Conexion a la BBDD
-    con = sqlite3.connect("databaseETL.db")
+    con = sqlite3.connect("../databaseETL.db")
     cur = con.cursor()
 
     # Creo un DataFrame con pandas
