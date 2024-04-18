@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
+import sqlite3
+
 from flask import Flask, render_template, request
-import SQLAlchemy
+
 
 DEVELOPMENT_ENV = True
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'databaseETL.db'
-db = SQLAlchemy(app)
 
 app_data = {
     "name": "Practica2 Sistemas de Informacion",
@@ -16,17 +16,6 @@ app_data = {
     "keywords": "flask, webapp, CMI",
 }
 
-class User(db.Model):
-    __tablename__ = 'users'
-    username = db.Column(db.String(100), primary_key=True)
-    phone = db.Column(db.Integer)
-    password = db.Column(db.String(100))
-    province = db.Column(db.String(100))
-    perms = db.Column(db.String(100))
-    totalEmails = db.Column(db.Integer)
-    phishingEmails = db.Column(db.Integer)
-    clickedEmails = db.Column(db.Integer)
-    critical = db.Column(db.Integer)
 
 
 @app.route("/")
@@ -53,7 +42,11 @@ def ejercicio2():
 def topXcriticalUsers():
     if request.method == 'POST':
         number = request.form['number']
-        users = User.query.filter_by(critical=1).order_by(User.totalEmails.desc()).limit(number).all()
+
+        cursorObj = con.cursor()
+        cursorObj.execute(('SELECT username, FROM usuarios WHERE critico = 1ORDER BY emails_totales DESC LIMIT ?'),(number))
+
+        users = cursorObj.fetchall()
 
         return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users = users)
 
@@ -61,4 +54,5 @@ def topXcriticalUsers():
 
 
 if __name__ == "__main__":
+    con = sqlite3.connect('databaseETL.db')
     app.run(debug=DEVELOPMENT_ENV)
