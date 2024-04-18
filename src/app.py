@@ -38,7 +38,8 @@ def ejercicio2():
 def topXcriticalUsers():
     if request.method == 'POST':
         number = request.form['number']
-        return render_template('topXcriticalUsers.html', number=number)
+        users = [0,1,2,3,4,5]
+        return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users = users)
 
 
 
