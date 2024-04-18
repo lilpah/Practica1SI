@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template, request
-import SQLAlchemy
+
 
 DEVELOPMENT_ENV = True
 
