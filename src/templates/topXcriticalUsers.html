@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>{{ app_data['description'] }}</h1>
+    <h2>Top {{ number }} critical users</h2>
+
+    {% for user in elements %}
+        <li>{{ element }}</li>
+        {% endfor %}
+{% endblock %}
