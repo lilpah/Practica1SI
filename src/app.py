@@ -20,8 +20,11 @@ app_data = {
 
 @app.route("/")
 def index():
-
     return render_template("index.html", app_data=app_data)
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return "Ocurrió un error en la base de datos. Por favor, intenta nuevamente.", 500
 
 
 @app.route("/top10")
@@ -41,14 +44,18 @@ def ejercicio2():
 @app.route("/topXcriticalUsers",methods = ['POST'])
 def topXcriticalUsers():
     if request.method == 'POST':
-        number = request.form['number']
-        con = sqlite3.connect('databaseETL.db')
-        cursorObj = con.cursor()
-        cursorObj.execute('''SELECT username FROM users WHERE critical = 1 LIMIT ? ''',(number,))
+        try:
+            number = request.form['number']
+            con = sqlite3.connect('databaseETL.db')
+            cursorObj = con.cursor()
+            cursorObj.execute('''SELECT username FROM users WHERE critical = 1 LIMIT ? ''',(number,))
 
-        users = cursorObj.fetchall()
-        con.close()
-        return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users = users)
+            users = cursorObj.fetchall()
+            con.close()
+            return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users = users)
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Ocurrió un error en la consulta. Por favor, intenta nuevamente.", 500
 
 
 
