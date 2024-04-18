@@ -42,17 +42,17 @@ def ejercicio2():
 def topXcriticalUsers():
     if request.method == 'POST':
         number = request.form['number']
-
+        con = sqlite3.connect('databaseETL.db')
         cursorObj = con.cursor()
-        cursorObj.execute(('SELECT username, FROM usuarios WHERE critico = 1ORDER BY emails_totales DESC LIMIT ?'),(number))
+        cursorObj.execute('''SELECT username FROM users WHERE critical = 1 LIMIT ? ''',(number,))
 
         users = cursorObj.fetchall()
-
+        con.close()
         return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users = users)
 
 
 
 
 if __name__ == "__main__":
-    con = sqlite3.connect('databaseETL.db')
+
     app.run(debug=DEVELOPMENT_ENV)
