@@ -25,9 +25,9 @@ def top10():
     return render_template("top10.html", app_data=app_data)
 
 
-@app.route("/service")
+@app.route("/ejercicio1.html")
 def service():
-    return render_template("service.html", app_data=app_data)
+    return render_template("ejercicio1.html", app_data=app_data)
 
 
 @app.route("/ejercicio2")
