@@ -48,11 +48,23 @@ def topXcriticalUsers():
             number = request.form['number']
             con = sqlite3.connect('databaseETL.db')
             cursorObj = con.cursor()
-            cursorObj.execute('''SELECT username FROM users WHERE critical = 1 LIMIT ? ''',(number,))
+            if 'check' in request.form:
+                if request.form['check'] == 'on':
+                    check = True
+                else:
+                    check = False
+            else:
+                check = False
+            cursorObj.execute('''SELECT username,(clickedEmails*100/phishingEmails) AS percentaje FROM users WHERE critical = 1 LIMIT ? ''',(number,))
 
             users = cursorObj.fetchall()
+            for i, (user, percent) in enumerate(users):
+                if int(percent) >= 50:
+                    users[i] = (user, True)
+                else:
+                    users[i] = (user, False)
             con.close()
-            return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users = users)
+            return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users=users, check=check)
         except Exception as e:
             app.logger.error('Ocurrió un error en la consulta: %s', str(e))
             return "Ocurrió un error en la consulta. Por favor, intenta nuevamente.", 500

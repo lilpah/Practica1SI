@@ -3,7 +3,10 @@
 {% block body %}
     <h1>Ingrese un número:</h1>
     <form action="/topXcriticalUsers" method="post">
-        <input type="number" name="number" required>
+        <label>
+            <input type="number" name="number" required>
+        </label>
+        <label for="check"><input type="checkbox" id="check" name ="check"> Mostrar si han pulsado o no mas del 50% de emails de phishing.</label>
         <input type="submit" value="Enviar">
     </form>
 
