@@ -24,7 +24,7 @@ def index():
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return "Ocurrió un error en la base de datos. Por favor, intenta nuevamente.", 500
+    return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
 
 
 @app.route("/top10")
@@ -67,7 +67,7 @@ def topXcriticalUsers():
             return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users=users, check=check)
         except Exception as e:
             app.logger.error('Ocurrió un error en la consulta: %s', str(e))
-            return "Ocurrió un error en la consulta. Por favor, intenta nuevamente.", 500
+            return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
 
 
 
