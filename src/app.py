@@ -2,7 +2,7 @@
 import sqlite3
 
 from flask import Flask, render_template, request
-
+from scriptsPractica1.vulnerabilidades import obtener_ultimas_vulnerabilidades
 
 DEVELOPMENT_ENV = True
 
@@ -29,7 +29,11 @@ def internal_server_error(e):
 
 @app.route("/top10")
 def top10():
-    return render_template("top10.html", app_data=app_data)
+    ultimas_vulnerabilidades = obtener_ultimas_vulnerabilidades()
+    if ultimas_vulnerabilidades is not None:
+        return render_template("top10.html", app_data=app_data, ultimas_vulnerabilidades=ultimas_vulnerabilidades)
+    else:
+        return "Error al obtener las últimas vulnerabilidades.", 500
 
 
 @app.route("/modelosIA")
