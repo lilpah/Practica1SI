@@ -2,7 +2,7 @@
 import sqlite3
 
 from flask import Flask, render_template, request
-from scriptsPractica1.vulnerabilidades import obtener_ultimas_vulnerabilidades
+from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
 
 DEVELOPMENT_ENV = True
 
@@ -41,45 +41,52 @@ def modelosIA():
     return render_template("modelosIA.html", app_data=app_data)
 
 
-@app.route("/ejercicio1.html")
+@app.route("/ejercicio1")
 def service():
     return render_template("ejercicio1.html", app_data=app_data)
 
 
-@app.route("/ejercicio2")
+@app.route("/analisisMetricas")
 def ejercicio2():
-    return render_template("ejercicio2.html", app_data=app_data)
+    return render_template("analisisMatricas.html", app_data=app_data)
 
 @app.route("/topXcriticalUsers",methods = ['POST'])
 def topXcriticalUsers():
     if request.method == 'POST':
-        try:
+       try:
             number = request.form['number']
+            opcion = request.form['outputType']
             con = sqlite3.connect('databaseETL.db')
             cursorObj = con.cursor()
-            if 'check' in request.form:
-                if request.form['check'] == 'on':
-                    check = True
-                else:
-                    check = False
-            else:
-                check = False
-            cursorObj.execute('''SELECT username,(clickedEmails*100/phishingEmails) AS percentaje FROM users WHERE critical = 1 LIMIT ? ''',(number,))
+
+            cursorObj.execute('''SELECT username,(clickedEmails*100/phishingEmails) AS percentaje FROM users  ORDER BY percentaje DESC LIMIT ? ''',(number,))
 
             users = cursorObj.fetchall()
-            for i, (user, percent) in enumerate(users):
-                if int(percent) >= 50:
-                    users[i] = (user, True)
-                else:
-                    users[i] = (user, False)
+            userfinal = []
+
+            if opcion == 'normal':
+                for (user,percentaje) in users:
+                    userfinal.append(user)
+            elif opcion == 'mayor':
+                for (user,percentaje) in users:
+                    if percentaje >= 50:
+                        userfinal.append(user)
+            elif opcion == 'menor':
+                for (user,percentaje) in users:
+                    if percentaje < 50:
+                        userfinal.append(user)
+
             con.close()
-            return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users=users, check=check)
-        except Exception as e:
+            return render_template('topXcriticalUsers.html', app_data=app_data,number=number, users=userfinal)
+       except Exception as e:
             app.logger.error('Ocurrió un error en la consulta: %s', str(e))
             return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
 
 
 
+@app.route("/login")
+def login():
+    return render_template("login.html", app_data=app_data)
 
 if __name__ == "__main__":
 

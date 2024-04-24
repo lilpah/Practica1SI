@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Ingrese un número:</h1>
+    <form action="/topXcriticalUsers" method="post">
+        <label>
+            <input type="number" name="number" required>
+        </label>
+        <label for="outputType">
+            <select id="outputType" name="outputType">
+                <option value="normal" selected>Normal</option>
+                <option value="mayor">Mayor del 50%</option>
+                <option value="menor">Menor del 50%</option>
+            </select>Filtrar búsqueda
+        </label>
+        <input type="submit" value="Enviar">
+    </form>
+
+{% endblock %}
