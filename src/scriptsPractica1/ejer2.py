@@ -63,4 +63,4 @@ print(f'Mínimo de emails de phishing interactuados por administradores: {minAdm
 print(f'Máximo de emails de phishing interactuados por administradores: {maxAdminEmails}')
 
 
-con.close()'''
+con.close()

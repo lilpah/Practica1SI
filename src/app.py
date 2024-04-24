@@ -32,6 +32,11 @@ def top10():
     return render_template("top10.html", app_data=app_data)
 
 
+@app.route("/modelosIA")
+def modelosIA():
+    return render_template("modelosIA.html", app_data=app_data)
+
+
 @app.route("/ejercicio1.html")
 def service():
     return render_template("ejercicio1.html", app_data=app_data)
