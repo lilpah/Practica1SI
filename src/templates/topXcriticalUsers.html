@@ -2,17 +2,8 @@
 
 {% block body %}
     <h2>Top {{ number }} critical users</h2>
-    {% if check %}
-        {% for user, percentage in users %}
-            {% if percentage %}
-                <li>{{ user }} | Mas del 50% de emails de phishing clickados</li>
-            {% else %}
-                <li>{{ user }} | Menos del 50% de emails de phishing clickados</li>
-            {% endif %}
-            {% endfor %}
-    {% else %}
-        {% for user, percentge in users %}
+        {% for user in users %}
             <li>{{ user }} </li>
             {% endfor %}
-    {% endif %}
+
 {% endblock %}

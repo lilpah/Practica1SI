@@ -2,12 +2,16 @@
 
 {% block body %}
 <div class="jumbotron">
-    <h1 class="display-4">Bootstrap starter template by {{ app_data['author'] }} </h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p>Title: {{ app_data['html_title'] }}</p>
+    <h1 class="display-4">Nuestro CMI</h1>
+    <p class="lead">Aquí encontraremos diversas aplicaciones para el análisis de datos de los empleados proporcionados
+    como pueden ser encontrar los usuarios mas críticos, encontrar las páginas que menos políticas cumplen, el top10
+    vulnerabilidades actuales entre otras que encontrarás aquí abajo.</p>
 
     <hr class="my-4">
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-    <a class="btn btn-primary btn-lg" href="/contact" role="button">Contact</a>
+    <p><a href="/top10">Top 10 vulnerabilidades actuales</a></p>
+    <p><a href="/analisisMetricas">Usuarios más críticos</a></p>
+    <p><a href="/analisisMetricas">Páginas web mas vulnerables</a></p>
+    <p><a href="/">Validación de usuarios</a></p>
+
   </div>
 {% endblock %}
