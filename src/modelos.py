@@ -45,10 +45,6 @@ def linearRegresion():
     # Entrenar el modelo con los datos de entrenamiento
     modelLinReg.fit(X_train, y_train)
 
-    # Obtener la pendiente del modelo
-    pendiente = modelLinReg.coef_[0]
-
-
     # Inicializar y_pred
     y_pred = modelLinReg.predict(x_test)
 
@@ -61,24 +57,23 @@ def linearRegresion():
         else:
             y_pred.append(1)
     """
+
+
     
     # Printear la pendiente
     print("Pendiente ", modelLinReg.coef_)
-    
+
     # Calcular el score de y_test y de y_pred
-    score = mean_squared_error(y_test, y_pred)
-    print("x_test", x_test)
-    print("y_test: ", y_test)
-    print("y_pred: ", y_pred)
-    
-    print("Mean squared error:", score)
+    squarredError = mean_squared_error(y_test, y_pred)
+    print("Mean squared error:", squarredError)
 
-
+    # Mostrar graficamente
     plt.scatter(x_test, y_test, color="black")
     plt.plot(x_test, y_pred, color="blue", linewidth=3)
     plt.xticks(())
     plt.yticks(())
     plt.show()
+
 
 
 def decisionTree():
@@ -96,13 +91,15 @@ def decisionTree():
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=33)
 
-
     # Arbol de decision
     decTree = tree.DecisionTreeClassifier()
+
+    #Entrenamos modelo
     decTree = decTree.fit(x_train, y_train)
 
 
     predY = decTree.predict(x_test)
+
     # Calculamos la exactitud del modelo
     accuracy = accuracy_score(y_test, predY)
     print("Accuracy:", accuracy)
@@ -159,11 +156,6 @@ def randomForest():
     accuracy = accuracy_score(y_test, predY)
     print("Accuracy:", accuracy)
 
-    """
-    print(x_test)
-    print(y_test)
-    print(predY)
-    """
 
     # Muestro todos los subarboles del forest en el directorio randomForest
     feature_names = ['totalEmails', 'phishingEmails', 'clickedEmails']
@@ -183,8 +175,8 @@ def randomForest():
 
 if __name__ == '__main__':
     #linearRegresion()
-    #decisionTree()
-    randomForest()
+    decisionTree()
+    #randomForest()
 
 
 
