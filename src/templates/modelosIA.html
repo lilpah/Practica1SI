@@ -1,6 +1,58 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h2>Modelos IA</h2>
+    <h1>Modelos de IA</h1>
+    <h2>Ingrese un usuario para conocer su criticidad mediante nuestros modelos de aprendizaje supervisado</h2>
+    <form action="/modelosIA" method="post">
+        <div style="margin-bottom: 10px;">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" name="name" pattern="[A-Za-z]+" title="Por favor, ingrese texto." required>
+        </div>
 
+        <div style="margin-bottom: 10px;">
+            <label for="pass">Contraseña:</label>
+            <input type="password" id="pass" name="pass" required>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label for="province">Provincia:</label>
+            <input type="text" id="province" name="province" pattern="[A-Za-z]+" title="Por favor, ingrese texto." required>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label for="permisos">Permisos:</label>
+            <select id="permisos" name="permisos">
+                <option value="0" selected>0</option>
+                <option value="1">1</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label for="totalEmails">Total de Emails:</label>
+            <input type="number" id="totalEmails" name="totalEmails" pattern="[0-9]+" title="Por favor, ingrese caracteres numéricos." required>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label for="phishingEmails">Emails de Phishing:</label>
+            <input type="number" id="phishingEmails" name="phishingEmails" pattern="[0-9]+" title="Por favor, ingrese caracteres numéricos." required>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label for="clickedEmails">Emails Clickados:</label>
+            <input type="number" id="clickedEmails" name="clickedEmails" pattern="[0-9]+" title="Por favor, ingrese caracteres numéricos." required>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label for="outputType">Modelo de Predicción:</label>
+            <select id="outputType" name="outputType">
+                <option value="regLineal" selected>Regresión Lineal</option>
+                <option value="decisionTree">Árbol de Decisión</option>
+                <option value="randomForest">Bosque Aleatorio</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <input type="submit" value="Enviar">
+        </div>
+    </form>
 {% endblock %}
