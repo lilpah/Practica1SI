@@ -12,6 +12,10 @@ from sklearn import tree
 import graphviz
 from sklearn.tree import export_graphviz, DecisionTreeClassifier
 from subprocess import call
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+
+
 
 
 
@@ -168,6 +172,42 @@ def randomForest():
     return ranForest
 
 
+# Modelo nuevo implementado para el ejercicio 4
+# Modelo KNN (K-Nearest Neighbors)
+def knn_model():
+    con = sqlite3.connect("databaseETL.db")
+
+    # Leer datos de la tabla 'users' en un DataFrame
+    usersDataFrame = pd.read_sql_query("SELECT totalEmails, clickedEmails, phishingEmails, critical FROM users", con)
+
+    # Cerrar la conexión a la base de datos
+    con.close()
+
+    # Dividir los datos
+    x = np.array(usersDataFrame[['totalEmails', 'phishingEmails', 'clickedEmails']])
+    y = np.array(usersDataFrame['critical'])
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=33)
+
+    # Crear el modelo de KNN
+    knn_model = KNeighborsClassifier(n_neighbors=10)
+
+    # Entrenar el modelo
+    knn_model.fit(x_train, y_train)
+
+    """
+    pred_y = knn_model.predict(x_test)
+
+    # Calcular la precisión del modelo
+    accuracy = accuracy_score(y_test, pred_y)
+    print("Accuracy:", accuracy)
+    """
+
+    # Devolver el modelo entrenado
+    return knn_model
+
+
+
 def prediccion(model, user):
     if isinstance(model, LinearRegression):
         # Realizar predicción utilizando el modelo de regresión lineal
@@ -197,6 +237,15 @@ def prediccion(model, user):
             return " critico"
         else:
             return " no critico"
+    elif isinstance(model, KNeighborsClassifier):
+        # Realizar predicción utilizando el modelo de bosque aleatorio
+        predY = model.predict(user)
+
+        # Si la prediccion es 1 -> usuario crtico
+        if predY == 1:
+            return " critico"
+        else:
+            return " no critico"
     else:
         print("Modelo no válido")
         return None
@@ -218,7 +267,7 @@ if __name__ == '__main__':
 
     # Modelo decision tree
     decision = decisionTree()
-    dataDecision = [101, 22, 14]
+    dataDecision = [145, 11, 566]
     dataDecision = np.array([dataDecision])
 
     usuario2 = prediccion(decision, dataDecision)
@@ -226,10 +275,18 @@ if __name__ == '__main__':
 
     # Modelo random forest
     random = randomForest()
-    dataRandom = [391, 22, 16]
+    dataRandom = [145, 11, 566]
     dataRandom = np.array([dataRandom])
 
     usuario3 = prediccion(random, dataRandom)
     print(usuario3)
+
+    # Modelo KNN
+    uda = knn_model()
+    dataRandom = [145, 11, 566]
+    dataRandom = np.array([dataRandom])
+
+    usuario4 = prediccion(uda, dataRandom)
+    print(usuario4)
 
 

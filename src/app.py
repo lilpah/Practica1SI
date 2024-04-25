@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect
 from sklearn.linear_model import LinearRegression
 
 from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
-from src.modelos import prediccion, linearRegresion, decisionTree, randomForest
+from src.modelos import prediccion, linearRegresion, decisionTree, randomForest, knn_model
 
 DEVELOPMENT_ENV = True
 
@@ -151,6 +151,14 @@ def modelosIA():
                 result = prediccion(model, valorPredecir)
             elif modelo == 'randomForest':
                 model = randomForest()
+                valorPredecir = [totalEmails, phishingEmails, clickedEmails]
+                valorPredecir = np.array([valorPredecir])
+                result = prediccion(model, valorPredecir)
+            elif modelo == 'knn':
+                model = knn_model()
+                totalEmails = float(totalEmails)
+                phishingEmails = float(phishingEmails)
+                clickedEmails = float(clickedEmails)
                 valorPredecir = [totalEmails, phishingEmails, clickedEmails]
                 valorPredecir = np.array([valorPredecir])
                 result = prediccion(model, valorPredecir)
