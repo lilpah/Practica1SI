@@ -174,27 +174,27 @@ def prediccion(model, user):
 
         # Si la prediccion es menor que la pendiente -> usuario no critico
         if predY < m:
-            return "El usuario no es critico"
+            return " no critico"
         else:
-            return "El usuario es critico"
+            return " critico"
     elif isinstance(model, DecisionTreeClassifier):
         # Realizar predicción utilizando el modelo de árbol de decisión
         predY = model.predict(user)
 
         # Si la prediccion es 1 -> usuario crtico
         if predY == 1:
-            return "El usuario es critico"
+            return " critico"
         else:
-            return "El usuario no es critico"
+            return " no critico"
     elif isinstance(model, RandomForestClassifier):
         # Realizar predicción utilizando el modelo de bosque aleatorio
         predY = model.predict(user)
 
         # Si la prediccion es 1 -> usuario crtico
         if predY == 1:
-            return "El usuario es critico"
+            return " critico"
         else:
-            return "El usuario no es critico"
+            return " no critico"
     else:
         print("Modelo no válido")
         return None
@@ -202,6 +202,8 @@ def prediccion(model, user):
 
 
 if __name__ == '__main__':
+
+    ############ Probar los modelos por consola de forma independiente
 
     # Modelo regresion lineal
     dataRegresionLineal = [1.93]

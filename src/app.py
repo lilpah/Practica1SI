@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 import sqlite3
 
+import numpy as np
 from flask import Flask, render_template, request
+from sklearn.linear_model import LinearRegression
+
 from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
+from src.modelos import prediccion, linearRegresion
 
 DEVELOPMENT_ENV = True
 
@@ -36,9 +40,32 @@ def top10():
         return "Error al obtener las últimas vulnerabilidades.", 500
 
 
-@app.route("/modelosIA")
-def modelosIA():
+@app.route("/modelosSupervisados")
+def modelosSupervisados():
     return render_template("modelosIA.html", app_data=app_data)
+
+
+@app.route("/modelosIA",methods = ['POST'])
+def modelosIA():
+    if request.method == 'POST':
+        try:
+            name = request.form['name']
+            totalEmails = request.form['totalEmails']
+            phishingEmails = request.form['phishingEmails']
+            clickedEmails = request.form['clickedEmails']
+            modelo = request.form['outputType']
+
+            if modelo == 'regLineal':
+                model = linearRegresion()
+                valorPredecir = [float(clickedEmails) / float(phishingEmails)]
+                valorPredecir = np.array([valorPredecir])
+                result = prediccion(model, valorPredecir)
+
+            return render_template("resultModelos.html", app_data=app_data, name=name, result=result)
+        except Exception as e:
+            app.logger.error('Ocurrió un error inesperado: %s', str(e))
+            return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
+
 
 
 @app.route("/ejercicio1")
