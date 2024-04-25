@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 import sqlite3
 from src.hashSHA256 import hashSHA256
-from flask import Flask, render_template, request
+import numpy as np
+from flask import Flask, render_template, request, redirect
+from sklearn.linear_model import LinearRegression
+
 from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
+from src.modelos import prediccion, linearRegresion
 
 DEVELOPMENT_ENV = True
 
@@ -36,14 +40,6 @@ def top10():
         return "Error al obtener las últimas vulnerabilidades.", 500
 
 
-@app.route("/modelosIA")
-def modelosIA():
-    return render_template("modelosIA.html", app_data=app_data)
-
-
-@app.route("/ejercicio1")
-def service():
-    return render_template("ejercicio1.html", app_data=app_data)
 
 
 @app.route("/analisisMetricas")
@@ -84,10 +80,79 @@ def topXcriticalUsers():
 
 
 
-@app.route("/login")
-def login():
+@app.route("/loginPage")
+def loginPage():
     return render_template("login.html", app_data=app_data)
 
+@app.route("/signInPage")
+def signInPage():
+    return render_template("signIn.html", app_data=app_data)
+@app.route("/signIn", methods = ['POST'])
+def signIn():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        hashedPassword = hashSHA256(password)
+        con = sqlite3.connect('databaseETL.db')
+        cursorObj = con.cursor()
+        try:
+            cursorObj.execute('''INSERT INTO usersLogin VALUES (?,?)''',
+                      (username, hashedPassword))
+            con.commit()
+            con.close()
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Usuario ya registrado. Cambie de nombre de usuario o inicie sesión.", 500
+        return redirect('/loginPage')
+
+@app.route("/login",methods = ['POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        password = hashSHA256(password)
+        con = sqlite3.connect('databaseETL.db')
+        cursorObj = con.cursor()
+        try:
+            cursorObj.execute(
+                '''SELECT username,password FROM usersLogin WHERE username = ? ''',
+                (username,))
+            users = cursorObj.fetchall()
+
+            (name, passwd) = users[0]
+            if password == passwd:
+                return render_template("userPage.html", app_data=app_data, username=username)
+            else:
+                redirect("/loginPage")
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Usuario o contraseña incorrectos. Porfavor vuelva a iniciar sesión", 500
+
+
+@app.route("/modelosIA",methods = ['POST'])
+def modelosIA():
+    if request.method == 'POST':
+        try:
+            name = request.form['name']
+            totalEmails = request.form['totalEmails']
+            phishingEmails = request.form['phishingEmails']
+            clickedEmails = request.form['clickedEmails']
+            modelo = request.form['outputType']
+
+            if modelo == 'regLineal':
+                model = linearRegresion()
+                valorPredecir = [float(clickedEmails) / float(phishingEmails)]
+                valorPredecir = np.array([valorPredecir])
+                result = prediccion(model, valorPredecir)
+
+            return render_template("resultModelos.html", app_data=app_data, name=name, result=result)
+        except Exception as e:
+            app.logger.error('Ocurrió un error inesperado: %s', str(e))
+            return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
+
+@app.route("/modelosSupervisados")
+def modelosSupervisados():
+    return render_template("modelosIA.html", app_data=app_data)
 if __name__ == "__main__":
 
     app.run(debug=DEVELOPMENT_ENV)
