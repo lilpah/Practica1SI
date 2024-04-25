@@ -135,8 +135,9 @@ def randomForest():
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=33)
 
 
-    ranForest = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=10)
+    ranForest = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=15)
     ranForest.fit(x_train, y_train)
+
 
     """
     ############## Todo esto mostrado en la memoria ##############
