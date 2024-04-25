@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Registrese:</h1>
+    <form action="/signIn" method="post">
+        <label>
+            <input type="text" name="username" required>
+        </label>
+        <label>
+            <input type="text" name="password" required>
+        </label>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+{% endblock %}

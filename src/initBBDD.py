@@ -11,6 +11,9 @@ def createBBDD():
     # Creamos las tablas usuarios y legal
     c.execute('''CREATE TABLE IF NOT EXISTS users
                      (username TEXT PRIMARY KEY, phone INTEGER, password TEXT, province TEXT, perms TEXT, totalEmails INTEGER, phishingEmails INTEGER, clickedEmails INTEGER, critical INTEGER)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS usersLogin
+                         (username TEXT PRIMARY KEY, password TEXT)''')
+   # c.execute('''INSERT OR IGNORE INTO usersLogin VALUES ('nacho','1234')''')
 
     c.execute('''CREATE TABLE IF NOT EXISTS legal
                      (web TEXT PRIMARY KEY, cookies INTEGER, warning INTEGER, dataProtection INTEGER,  createNumber INTEGER)''')

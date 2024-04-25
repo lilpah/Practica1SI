@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 import sqlite3
 
-from flask import Flask, render_template, request
+
+from flask import Flask, render_template, request, redirect
+
+from src.hashSHA256 import hashSHA256
 from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
 
 DEVELOPMENT_ENV = True
@@ -84,9 +87,58 @@ def topXcriticalUsers():
 
 
 
-@app.route("/login")
-def login():
+@app.route("/loginPage")
+def loginPage():
     return render_template("login.html", app_data=app_data)
+
+@app.route("/signInPage")
+def signInPage():
+    return render_template("signIn.html", app_data=app_data)
+@app.route("/signIn", methods = ['POST'])
+def signIn():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        hashedPassword = hashSHA256(password)
+        con = sqlite3.connect('databaseETL.db')
+        cursorObj = con.cursor()
+        try:
+            cursorObj.execute('''INSERT INTO usersLogin VALUES (?,?)''',
+                      (username, hashedPassword))
+            con.commit()
+            con.close()
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Usuario ya registrado. Cambie de nombre de usuario o inicie sesión.", 500
+        return redirect('/loginPage')
+
+@app.route("/login",methods = ['POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        password = hashSHA256(password)
+        con = sqlite3.connect('databaseETL.db')
+        cursorObj = con.cursor()
+        try:
+            cursorObj.execute(
+                '''SELECT username,password FROM usersLogin WHERE username = ? ''',
+                (username,))
+            users = cursorObj.fetchall()
+
+            (name, passwd) = users[0]
+            if password == passwd:
+                return render_template("userPage.html", app_data=app_data)
+            else:
+                redirect("/loginPage")
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Usuario o contraseña incorrectos. Porfavor vuelva a iniciar sesión", 500
+
+
+
+
+
 
 if __name__ == "__main__":
 
