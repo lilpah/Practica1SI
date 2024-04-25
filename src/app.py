@@ -123,7 +123,7 @@ def login():
             if password == passwd:
                 return render_template("userPage.html", app_data=app_data, username=username)
             else:
-                redirect("/loginPage")
+                return redirect("/loginPage")
         except Exception as e:
             app.logger.error('Ocurrió un error en la consulta: %s', str(e))
             return "Usuario o contraseña incorrectos. Porfavor vuelva a iniciar sesión", 500
