@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect
 from sklearn.linear_model import LinearRegression
 
 from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
-from src.modelos import prediccion, linearRegresion
+from src.modelos import prediccion, linearRegresion, decisionTree, randomForest
 
 DEVELOPMENT_ENV = True
 
@@ -144,6 +144,18 @@ def modelosIA():
                 valorPredecir = [float(clickedEmails) / float(phishingEmails)]
                 valorPredecir = np.array([valorPredecir])
                 result = prediccion(model, valorPredecir)
+            elif modelo == 'decisionTree':
+                model = decisionTree()
+                valorPredecir = [totalEmails, phishingEmails, clickedEmails]
+                valorPredecir = np.array([valorPredecir])
+                result = prediccion(model, valorPredecir)
+            elif modelo == 'randomForest':
+                model = randomForest()
+                valorPredecir = [totalEmails, phishingEmails, clickedEmails]
+                valorPredecir = np.array([valorPredecir])
+                result = prediccion(model, valorPredecir)
+            else:
+                return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
 
             return render_template("resultModelos.html", app_data=app_data, name=name, result=result)
         except Exception as e:
@@ -153,6 +165,8 @@ def modelosIA():
 @app.route("/modelosSupervisados")
 def modelosSupervisados():
     return render_template("modelosIA.html", app_data=app_data)
+
+
 if __name__ == "__main__":
 
     app.run(debug=DEVELOPMENT_ENV)

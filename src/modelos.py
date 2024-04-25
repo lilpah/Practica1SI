@@ -98,10 +98,11 @@ def decisionTree():
     
     ####### Predecir
     predY = decTree.predict(x_test)
-
+   
     ######## Calculamos la exactitud del modelo
     accuracy = accuracy_score(y_test, predY)
     print("Accuracy:", accuracy)
+   
 
     ####### Representacion grafica
     feature_names = ['totalEmails', 'phishingEmails', 'clickedEmails']
