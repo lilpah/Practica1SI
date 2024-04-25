@@ -8,14 +8,14 @@
             {% for vulnerability in ultimas_vulnerabilidades %}
                 <div class="col-md-6">
                     <p>Id: {{ vulnerability.id }}</p>
-                    <p>CVSS: {% if vulnerability.cvss is defined and vulnerability.cvss is not none %} {{ vulnerability.cvss }} {% else %} No disponible {% endif %}</p>
-                    <p>CWE: {% if vulnerability.cwe is defined and vulnerability.cwe is not none %} {{ vulnerability.cwe }} {% else %} No disponible {% endif %}</p>
+                    <p>Published: {{vulnerability.published}}</p>
+                    <p>CWE: {{vulnerability.cwe}}</p>
 
                 </div>
                 <div class="col-md-6">
-                    <p>Impact: {% if vulnerability.impact is defined and vulnerability.impact != '' %} {{ vulnerability.impact }} {% else %} No disponible {% endif %}</p>
-                    <p>Confidentiality: {% if vulnerability.confidentiality is defined and vulnerability.confidentiality != '' %} {{ vulnerability.confidentiality }} {% else %} No disponible {% endif %}</p>
-                    <p>Access: {% if vulnerability.access is defined and vulnerability.access != '' %} {{ vulnerability.access }} {% else %} No disponible {% endif %}</p>
+                    <p>Last modified:{{vulnerability['last-modified']}}</p>
+                    <p>Assigner:{{vulnerability.assigner}}</p>
+                    <p>Summary:{{vulnerability.summary}}</p>
                 </div>
                 <div class="col-12">
                     <hr> <!-- Línea divisoria -->
