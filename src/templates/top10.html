@@ -7,15 +7,15 @@
         <div class="row">
             {% for vulnerability in ultimas_vulnerabilidades %}
                 <div class="col-md-6">
-                    <p>Id: {{ vulnerability.id }}</p>
+                    <p>ID: {{ vulnerability.id }}</p>
                     <p>Published: {{vulnerability.Published}}</p>
                     <p>CWE: {{vulnerability.cwe}}</p>
 
                 </div>
                 <div class="col-md-6">
-                    <p>Last modified:{{vulnerability['last-modified']}}</p>
-                    <p>Assigner:{{vulnerability.assigner}}</p>
-                    <p>Summary:{{vulnerability.summary}}</p>
+                    <p>Last modified: {{vulnerability['last-modified']}}</p>
+                    <p>Assigner: {{vulnerability.assigner}}</p>
+                    <p>Summary: {{vulnerability.summary}}</p>
                 </div>
                 <div class="col-12">
                     <hr> <!-- Línea divisoria -->
