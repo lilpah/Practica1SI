@@ -1,19 +1,23 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+ <div class="custom-form">
     <h1>Ingrese un número:</h1>
     <form action="/topXcriticalUsers" method="post">
-        <label>
-            <input type="number" name="number" required>
-        </label>
-        <label for="outputType">
-            <select id="outputType" name="outputType">
+        <div class="form-group">
+            <label for="number">Número:</label>
+            <input type="number" id="number" name="number" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="outputType">Filtrar búsqueda:</label>
+            <select id="outputType" name="outputType" class="form-control">
                 <option value="normal" selected>Normal</option>
                 <option value="mayor">Mayor del 50%</option>
                 <option value="menor">Menor del 50%</option>
-            </select>Filtrar búsqueda
-        </label>
-        <input type="submit" value="Enviar">
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
+</div>
 
 {% endblock %}

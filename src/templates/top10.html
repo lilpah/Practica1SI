@@ -3,26 +3,26 @@
 {% block body %}
 
       <div class="vulnerabilities">
-        <h1>Últimas 10 vulnerabilidades:</h1>
-        <div class="row">
+    <h1>Últimas 10 vulnerabilidades:</h1>
+    <table class="table">
+        <tbody>
             {% for vulnerability in ultimas_vulnerabilidades %}
-                <div class="col-md-6">
-                    <p>ID: {{ vulnerability.id }}</p>
-                    <p>Published: {{vulnerability.Published}}</p>
-                    <p>CWE: {{vulnerability.cwe}}</p>
-
-                </div>
-                <div class="col-md-6">
-                    <p>Last modified: {{vulnerability['last-modified']}}</p>
-                    <p>Assigner: {{vulnerability.assigner}}</p>
-                    <p>Summary: {{vulnerability.summary}}</p>
-                </div>
-                <div class="col-12">
-                    <hr> <!-- Línea divisoria -->
-                </div>
+                <tr class="vulnerability-row">
+                    <td class="vulnerability-left">
+                        <p>Id: {{ vulnerability.id }}</p>
+                        <p>Published: {{ vulnerability.Published }}</p>
+                        <p>CWE: {{ vulnerability.cwe }}</p>
+                    </td>
+                    <td class="vulnerability-right">
+                        <p>Assigner: {{ vulnerability.assigner }}</p>
+                        <p>Last modified: {{ vulnerability['last-modified'] }}</p>
+                        <p>Summary: {{ vulnerability.summary }}</p>
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
-    </div>
-    </div>
+        </tbody>
+    </table>
+</div>
+
 
 {% endblock %}

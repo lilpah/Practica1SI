@@ -1,0 +1,15 @@
+.vulnerability-row {
+    background-color: beige;
+}
+
+.vulnerability-left, .vulnerability-right {
+    width: 50%;
+    padding: 10px;
+
+}
+.vulnerability-item {
+    background-color: beige;
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
