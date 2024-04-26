@@ -34,6 +34,7 @@ def internal_server_error(e):
 @app.route("/top10")
 def top10():
     ultimas_vulnerabilidades = obtener_ultimas_vulnerabilidades()
+    print(ultimas_vulnerabilidades)
     if ultimas_vulnerabilidades is not None:
         return render_template("top10.html", app_data=app_data, ultimas_vulnerabilidades=ultimas_vulnerabilidades)
     else:
