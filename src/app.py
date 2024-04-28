@@ -200,6 +200,44 @@ def modelosIA():
 def modelosSupervisados():
     return render_template("modelosIA.html", app_data=app_data)
 
+@app.route("/topxOutdated", methods=['POST'])
+def topxOutdated():
+    if request.method == 'POST':
+        try:
+            number = request.form['number']
+            con = sqlite3.connect('databaseETL.db')
+            cursorObj = con.cursor()
+
+            cursorObj.execute('''SELECT web ,(cookies + warning + dataProtection) AS SUMA
+                                 FROM legal  ORDER BY SUMA DESC LIMIT ? ''', (number,))
+
+            webs = cursorObj.fetchall()
+            # Separar los datos en listas para el eje X y el eje Y
+            nombres_web = [web[0] for web in webs]
+            suma_valores = [web[1] for web in webs]
+
+            # Generar el gráfico
+            plt.bar(nombres_web, suma_valores)
+            plt.xlabel('Webs')
+            plt.ylabel('Suma de valores')
+            plt.title('Top X Webs')
+            plt.xticks(rotation=45, ha='right')  # Rotar las etiquetas del eje X para mayor claridad
+
+            # Convertir la gráfica a una imagen base64
+            img = BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            graph_url = base64.b64encode(img.getvalue()).decode()
+
+            # Cerrar la conexión a la base de datos
+            con.close()
+
+            # Pasar los datos a la plantilla HTML
+            return render_template('topXoutdated.html', app_data=app_data, number=number,
+                                   webs=webs, graph_url=graph_url)
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Ha ocurrido un error. Por favor, inténtalo de nuevo.", 500
 
 if __name__ == "__main__":
 
