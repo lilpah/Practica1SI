@@ -1,2 +1,2 @@
 # Practica1SI
-Este repositorio contiene la Práctica 1 de la asignatura Sistemas de la Información
+Este repositorio contiene la Práctica 2 de la asignatura Sistemas de la Información
