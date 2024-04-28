@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Webs Desactualizadas</h1>
+    <div class="container">
+        <h2>Gráfica</h2>
+        <img src="data:image/png;base64,{{ graph_url }}" alt="Gráfica de webs desactualizadas">
+    </div>
+
+    <div style="margin-top: 20px;"></div> <!-- Espacio entre la gráfica y la lista de usuarios -->
+
+    <div class="container">
+        <h2>Lista de webs</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>web</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for web in webs %}
+                <tr>
+                    <td>{{ web }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
