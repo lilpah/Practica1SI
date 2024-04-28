@@ -50,41 +50,6 @@ def top10():
 @app.route("/analisisMetricas")
 def analisisMetricas():
     return render_template("analisisMatricas.html", app_data=app_data)
-"""
-@app.route("/topXcriticalUsers",methods = ['POST'])
-def topXcriticalUsers():
-    if request.method == 'POST':
-       try:
-            number = request.form['number']
-            opcion = request.form['outputType']
-            con = sqlite3.connect('databaseETL.db')
-            cursorObj = con.cursor()
-
-            cursorObj.execute('''SELECT username,(clickedEmails*100/phishingEmails) AS percentaje
-             FROM users  ORDER BY percentaje DESC LIMIT ? ''',(number,))
-
-            users = cursorObj.fetchall()
-            userfinal = []
-
-            if opcion == 'normal':
-                for (user,percentaje) in users:
-                    userfinal.append(user)
-            elif opcion == 'mayor':
-                for (user,percentaje) in users:
-                    if percentaje >= 50:
-                        userfinal.append(user)
-            elif opcion == 'menor':
-                for (user,percentaje) in users:
-                    if percentaje < 50:
-                        userfinal.append(user)
-
-            con.close()
-            return render_template('topXcriticalUsers.html', app_data=app_data,number=number,
-                                   users=userfinal)
-       except Exception as e:
-            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
-            return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
-"""
 
 
 @app.route("/topXcriticalUsers", methods=['POST'])
