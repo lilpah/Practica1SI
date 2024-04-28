@@ -1,28 +1,88 @@
 {% extends 'layout.html' %}
 
+{% block styles %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .vulnerabilities {
+        margin-top: 40px;
+    }
+
+    .vulnerabilities h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .vulnerability-row:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .vulnerability-left, .vulnerability-right {
+        width: 50%;
+    }
+
+    .vulnerability-left p, .vulnerability-right p {
+        margin: 6px 0;
+    }
+
+    @media (max-width: 600px) {
+        .vulnerability-left, .vulnerability-right {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block body %}
-
-      <div class="vulnerabilities">
-    <h1>Últimas 10 vulnerabilidades:</h1>
-    <table class="table">
-        <tbody>
-            {% for vulnerability in ultimas_vulnerabilidades %}
-                <tr class="vulnerability-row">
-                    <td class="vulnerability-left">
-                        <p>Id: {{ vulnerability.id }}</p>
-                        <p>Published: {{ vulnerability.Published }}</p>
-                        <p>CWE: {{ vulnerability.cwe }}</p>
-                    </td>
-                    <td class="vulnerability-right">
-                        <p>Assigner: {{ vulnerability.assigner }}</p>
-                        <p>Last modified: {{ vulnerability['last-modified'] }}</p>
-                        <p>Summary: {{ vulnerability.summary }}</p>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-
+    <div class="vulnerabilities">
+        <h1>Últimas 10 vulnerabilidades:</h1>
+        <table class="table">
+            <tbody>
+                {% for vulnerability in ultimas_vulnerabilidades %}
+                    <tr class="vulnerability-row">
+                        <td class="vulnerability-left">
+                            <p>{{ vulnerability.id }}</p>
+                            <p>Published: {{ vulnerability.Published }}</p>
+                            <p>CWE: {{ vulnerability.cwe }}</p>
+                        </td>
+                        <td class="vulnerability-right">
+                            <p>Assigner: {{ vulnerability.assigner }}</p>
+                            <p>Last modified: {{ vulnerability['last-modified'] }}</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

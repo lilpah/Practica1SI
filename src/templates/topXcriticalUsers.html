@@ -1,9 +1,29 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h2>Top {{ number }} critical users</h2>
-        {% for user in users %}
-            <li>{{ user }} </li>
-            {% endfor %}
+    <h1>Usuarios Críticos</h1>
+    <div class="container">
+        <h2>Gráfica</h2>
+        <img src="data:image/png;base64,{{ graph_url }}" alt="Gráfica de usuarios críticos">
+    </div>
 
+    <div style="margin-top: 20px;"></div> <!-- Espacio entre la gráfica y la lista de usuarios -->
+
+    <div class="container">
+        <h2>Lista de Usuarios</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

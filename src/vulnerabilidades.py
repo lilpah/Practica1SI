@@ -4,7 +4,7 @@ import requests
 def obtener_ultimas_vulnerabilidades():
     try:
         # Hacer una solicitud GET a la API para obtener las últimas vulnerabilidades
-        response = requests.get("https://cve.circl.lu/api/last")
+        response = requests.get("https://cve.circl.lu/api/last/")
 
         # Verificar la solicitud
         if response.status_code == 200:

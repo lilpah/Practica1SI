@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
+import base64
 import sqlite3
+
+from matplotlib import pyplot as plt
+
 from src.hashSHA256 import hashSHA256
 import numpy as np
 from flask import Flask, render_template, request, redirect
@@ -7,6 +11,7 @@ from sklearn.linear_model import LinearRegression
 
 from src.vulnerabilidades import obtener_ultimas_vulnerabilidades
 from src.modelos import prediccion, linearRegresion, decisionTree, randomForest, knn_model
+from io import BytesIO
 
 DEVELOPMENT_ENV = True
 
@@ -45,7 +50,7 @@ def top10():
 @app.route("/analisisMetricas")
 def analisisMetricas():
     return render_template("analisisMatricas.html", app_data=app_data)
-
+"""
 @app.route("/topXcriticalUsers",methods = ['POST'])
 def topXcriticalUsers():
     if request.method == 'POST':
@@ -79,7 +84,61 @@ def topXcriticalUsers():
        except Exception as e:
             app.logger.error('Ocurrió un error en la consulta: %s', str(e))
             return "Ha ocurrido un error. Por favor, intentalo de nuevo.", 500
+"""
 
+
+@app.route("/topXcriticalUsers", methods=['POST'])
+def topXcriticalUsers():
+    if request.method == 'POST':
+        try:
+            number = request.form['number']
+            opcion = request.form['outputType']
+            con = sqlite3.connect('databaseETL.db')
+            cursorObj = con.cursor()
+
+            cursorObj.execute('''SELECT username,(clickedEmails*100/phishingEmails) AS percentage
+                                 FROM users  ORDER BY percentage DESC LIMIT ? ''', (number,))
+
+            users = cursorObj.fetchall()
+            userfinal = []
+
+            if opcion == 'normal':
+                for (user, percentage) in users:
+                    userfinal.append(user)
+            elif opcion == 'mayor':
+                for (user, percentage) in users:
+                    if percentage >= 50:
+                        userfinal.append(user)
+            elif opcion == 'menor':
+                for (user, percentage) in users:
+                    if percentage < 50:
+                        userfinal.append(user)
+
+            # Crear la gráfica
+            x = [i for i in range(1, int(number) + 1)]
+            y = [percentage for (user, percentage) in users]
+            plt.figure(figsize=(10, 6))
+            plt.bar(x, y, color='skyblue')
+            plt.xlabel('Nivel de criticidad')
+            plt.ylabel('Porcentaje')
+            plt.title('Usuarios más críticos')
+            plt.xticks(x, userfinal, rotation=45, ha='right')
+
+            # Convertir la gráfica a una imagen base64
+            img = BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            graph_url = base64.b64encode(img.getvalue()).decode()
+
+            # Cerrar la conexión a la base de datos
+            con.close()
+
+            # Pasar los datos a la plantilla HTML
+            return render_template('topXcriticalUsers.html', app_data=app_data, number=number,
+                                   users=userfinal, graph_url=graph_url)
+        except Exception as e:
+            app.logger.error('Ocurrió un error en la consulta: %s', str(e))
+            return "Ha ocurrido un error. Por favor, inténtalo de nuevo.", 500
 
 
 @app.route("/loginPage")
